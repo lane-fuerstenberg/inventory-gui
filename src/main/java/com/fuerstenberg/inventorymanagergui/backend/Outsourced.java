@@ -1,4 +1,4 @@
-package com.fuerstenberg.inventorymanagergui;
+package com.fuerstenberg.inventorymanagergui.backend;
 
 public class Outsourced extends Part {
     private String companyName;

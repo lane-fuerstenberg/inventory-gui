@@ -1,6 +1,5 @@
-package com.fuerstenberg.inventorymanagergui;
+package com.fuerstenberg.inventorymanagergui.backend;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

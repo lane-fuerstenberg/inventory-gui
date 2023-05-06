@@ -1,4 +1,4 @@
-package com.fuerstenberg.inventorymanagergui;
+package com.fuerstenberg.inventorymanagergui.backend;
 /**
 * Supplied class Part.java 
  */

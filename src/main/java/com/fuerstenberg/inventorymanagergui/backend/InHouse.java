@@ -1,4 +1,4 @@
-package com.fuerstenberg.inventorymanagergui;
+package com.fuerstenberg.inventorymanagergui.backend;
 
 public class InHouse extends Part {
     private int machineId;

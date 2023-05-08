@@ -4,23 +4,27 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Inventory {
-    ObservableList<Part> allParts;
-    ObservableList<Product> allProducts;
+    private static ObservableList<Part> allParts;
+    private static ObservableList<Product> allProducts;
 
-    private Inventory() {
+    public static void init() {
         allParts = FXCollections.observableArrayList();
         allProducts = FXCollections.observableArrayList();
     }
 
-    public void addPart(Part newPart) {
+    public static ObservableList<Part> getParts() {
+        return allParts;
+    }
+
+    public static void addPart(Part newPart) {
         allParts.add(newPart);
     }
 
-    public void addProduct(Product newProduct) {
+    public static void addProduct(Product newProduct) {
         allProducts.add(newProduct);
     }
 
-    public Part lookupPart(int partId) {
+    public static Part lookupPart(int partId) {
         for (Part part : allParts) {
             if (part.getId() == partId) {
                 return part;
@@ -30,7 +34,7 @@ public class Inventory {
         return null;
     }
 
-    public Product lookupProduct(int productId) {
+    public static Product lookupProduct(int productId) {
         for (Product product : allProducts) {
             if (product.getId() == productId) {
                 return product;
@@ -40,22 +44,22 @@ public class Inventory {
         return null;
     }
 
-    public ObservableList<Part> lookupPart(String partName) {
+    public static ObservableList<Part> lookupPart(String partName) {
         //ObservableList<Part> p = new ObservableList<Part>();
         //string version
         return null;
     }
 
-    public ObservableList<Product> lookupProduct(String productName) {
+    public static ObservableList<Product> lookupProduct(String productName) {
         //string version lookup
         return null;
     }
 
-    public void updatePart(int index, Part newPart) {
+    public static void updatePart(int index, Part newPart) {
         allParts.set(index, newPart);
     }
 
-    public void updateProduct(int index, Product newProduct) {
+    public static void updateProduct(int index, Product newProduct) {
         allProducts.set(index, newProduct);
     }
 }

@@ -5,7 +5,7 @@ package com.fuerstenberg.inventorymanagergui.backend;
 
 /**
  *
- * @author Place Your Name Here
+ * @author Richard Fuerstenberg
  */
 public abstract class Part {
     private int id;

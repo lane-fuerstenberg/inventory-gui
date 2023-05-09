@@ -3,52 +3,66 @@ package com.fuerstenberg.inventorymanagergui;
 import com.fuerstenberg.inventorymanagergui.backend.InHouse;
 import com.fuerstenberg.inventorymanagergui.backend.Inventory;
 import com.fuerstenberg.inventorymanagergui.backend.Outsourced;
+import com.fuerstenberg.inventorymanagergui.backend.Part;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class partFormController {
-    public enum FormType {MODIFY, ADD};
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    private static Parent root;
-    private static Stage stage;
-    private static FormType formType;
+public class ModifyPartFormController  {
 
     @FXML
-    private RadioButton inhouseRadio;
+    protected Label formLabel;
 
     @FXML
-    private TextField idTextField;
+    protected VBox vBox;
 
     @FXML
-    private  TextField nameTextField;
+    protected RadioButton inhouseRadio;
 
     @FXML
-    private TextField inventoryTextField;
+    protected TextField idTextField;
 
     @FXML
-    private TextField priceTextField;
+    protected  TextField nameTextField;
 
     @FXML
-    private TextField maxTextField;
+    protected TextField inventoryTextField;
 
     @FXML
-    private TextField minTextField;
+    protected TextField priceTextField;
 
     @FXML
-    private TextField miscTextField;
+    protected TextField maxTextField;
 
     @FXML
-    private Label miscLabel;
+    protected TextField minTextField;
 
-    public static void init(Parent root, Stage stage, FormType formType) {
-        partFormController.root = root;
-        partFormController.stage = stage;
-        partFormController.formType = formType;
+    @FXML
+    protected TextField miscTextField;
+
+    @FXML
+    protected Label miscLabel;
+
+    @FXML
+    protected Button saveButton;
+
+    @FXML
+    protected Button cancelButton;
+
+    private Part part;
+
+
+    public void setPart(Part part) {
+        this.part = part;
     }
 
-    public void saveData() {
+    public void saveData(ActionEvent actionEvent) {
         Boolean validData = true;
         int id = -1;
         String name = null;
@@ -95,7 +109,7 @@ public class partFormController {
         clearTextFields();
     }
 
-    private void clearTextFields() {
+    protected void clearTextFields() {
         idTextField.setText("");
         nameTextField.setText("");
         inventoryTextField.setText("");
@@ -105,7 +119,8 @@ public class partFormController {
         miscTextField.setText("");
     }
 
-    private static boolean hasStockWithinMinMax(int inventory, int max, int min) {
+
+     static boolean hasStockWithinMinMax(int inventory, int max, int min) {
         return inventory > min && inventory < max;
     }
 
@@ -118,6 +133,22 @@ public class partFormController {
     }
 
     public void cancelButton() {
+        Stage stage = (Stage) vBox.getScene().getWindow();
         stage.close();
+    }
+
+    protected void assignOnCallMethods() {
+        saveButton.setOnAction(this::saveData);
+    }
+
+
+    public void populateForm() {
+        idTextField.setText(Integer.toString(part.getId()));
+        nameTextField.setText(part.getName());
+        priceTextField.setText(Double.toString(part.getPrice()));
+        inventoryTextField.setText(Integer.toString(part.getStock()));
+        maxTextField.setText(Integer.toString(part.getMax()));
+        minTextField.setText(Integer.toString(part.getMin()));
+        //todo: last field
     }
 }

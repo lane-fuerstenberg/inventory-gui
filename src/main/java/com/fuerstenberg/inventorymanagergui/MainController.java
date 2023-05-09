@@ -9,12 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.io.IOException;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -35,15 +34,20 @@ public class MainController implements Initializable {
     private TableColumn<Part, Double> partPriceColumn;
 
     @FXML
+    private GridPane gridPane;
+
+
+
+
+    @FXML
     public void startAddPartForm() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("partForm.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("addPartForm.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.initModality(Modality.APPLICATION_MODAL);
+            setStageProperties(stage);
             stage.show();
-            partFormController.init(root, stage, partFormController.FormType.ADD);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,28 +56,45 @@ public class MainController implements Initializable {
     @FXML
     public void startModifyPartForm() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("partForm.fxml"));
+            Part part = partTableView.getSelectionModel().getSelectedItem();
+            if (part == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Select an item from the table", ButtonType.OK);
+                alert.showAndWait();
+                return;
+            }
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("modifyPartForm.fxml"));
+
+            Parent root = fxmlLoader.load();
+            ModifyPartFormController controller = fxmlLoader.getController();
+            controller.setPart(part);
+            controller.populateForm();
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.initModality(Modality.APPLICATION_MODAL);
+            setStageProperties(stage);
             stage.show();
-            partFormController.init(root, stage, partFormController.FormType.MODIFY);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private static void setStageProperties(Stage stage) {
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //part table
-        partIdColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("id"));
-        partNameColumn.setCellValueFactory(new PropertyValueFactory<Part, String>("name"));
-        partInventoryColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
-        partPriceColumn.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
-        partTableView.setItems(getParts());
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("partTableView.fxml"));
+            partTableView = fxmlLoader.load();
+            gridPane.getChildren().add(partTableView);
 
-        //product table
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public ObservableList<Part> getParts() {

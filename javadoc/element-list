@@ -1,0 +1,5 @@
+module:com.fuerstenberg.inventorymanagergui
+com.fuerstenberg.inventorymanagergui
+com.fuerstenberg.inventorymanagergui.backend
+com.fuerstenberg.inventorymanagergui.component
+com.fuerstenberg.inventorymanagergui.form

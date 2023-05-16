@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.GridPane?>
+
+<TableView fx:id="productTableView" prefHeight="229.0" prefWidth="400.0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fuerstenberg.inventorymanagergui.component.ProductTableViewController">
+        <columns>
+            <TableColumn fx:id="productIdColumn" prefWidth="75.0" resizable="false" text="product ID" />
+            <TableColumn fx:id="productNameColumn" prefWidth="100.0" resizable="false" text="product Name" />
+            <TableColumn fx:id="productInventoryColumn" maxWidth="100.0" prefWidth="100.0" resizable="false" text="Inventory Level" />
+            <TableColumn fx:id="productPriceColumn" maxWidth="124.0" prefWidth="124.0" resizable="false" text="Price/ Cost per Unit" />
+        </columns>
+        <GridPane.margin>
+            <Insets top="10.0" />
+        </GridPane.margin>
+</TableView>

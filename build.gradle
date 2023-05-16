@@ -9,6 +9,7 @@ plugins {
 group 'com.fuerstenberg'
 version '1.0-SNAPSHOT'
 
+
 repositories {
   mavenCentral()
 }
@@ -26,7 +27,7 @@ tasks.withType(JavaCompile) {
 
 application {
   mainModule = 'com.fuerstenberg.inventorymanagergui'
-  mainClass = 'com.fuerstenberg.inventorymanagergui.HelloApplication'
+  mainClass = 'com.fuerstenberg.inventorymanagergui.MainApplication'
 }
 
 javafx {

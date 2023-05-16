@@ -1,68 +1,118 @@
-package com.fuerstenberg.inventorymanagergui;
+package com.fuerstenberg.inventorymanagergui.form;
 
 import com.fuerstenberg.inventorymanagergui.backend.InHouse;
 import com.fuerstenberg.inventorymanagergui.backend.Inventory;
 import com.fuerstenberg.inventorymanagergui.backend.Outsourced;
 import com.fuerstenberg.inventorymanagergui.backend.Part;
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
+/**
+ * Controller for fxml modifyPartForm
+ */
 public class ModifyPartFormController  {
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected Label formLabel;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected VBox vBox;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected RadioButton inhouseRadio;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected TextField idTextField;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected  TextField nameTextField;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected TextField inventoryTextField;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected TextField priceTextField;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected TextField maxTextField;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected TextField minTextField;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected TextField miscTextField;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected Label miscLabel;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected Button saveButton;
 
+    /**
+     * fxml accessor
+     */
     @FXML
     protected Button cancelButton;
 
+    /**
+     * The current part being manipulated from inventory
+     */
     private Part part;
 
 
+    /**
+     * Called when modifyPartForm is started to assign part
+     * @param part part that is being modified
+     */
     public void setPart(Part part) {
         this.part = part;
     }
 
-    public void saveData(ActionEvent actionEvent) {
+    /**
+     * RUNTIME ERROR: modifying part seems to require the index to replace the old part. Other methods of modifying did
+     * not work.
+     * Save the new data over the old part
+     */
+    public void saveData() {
         Boolean validData = true;
         int id = -1;
         String name = null;
@@ -70,6 +120,8 @@ public class ModifyPartFormController  {
         int inventory = -1;
         int max = -1;
         int min = -1;
+        String misc = null;
+        Boolean isInHouse = inhouseRadio.isSelected();
 
         /*
         lazy retrieve code, I didn't see anything specifying how we need to vet our data, so I just decided to use
@@ -84,6 +136,7 @@ public class ModifyPartFormController  {
             inventory = Integer.valueOf(inventoryTextField.getText());
             max = Integer.valueOf(maxTextField.getText());
             min = Integer.valueOf(minTextField.getText());
+            misc = miscTextField.getText();
 
         } catch (Exception e) {
             validData = false;
@@ -91,7 +144,7 @@ public class ModifyPartFormController  {
 
         //Handling invalid inputs
         //guard clause - exits if true
-        if (!hasStockWithinMinMax(inventory, max, min) || validData == false) {
+        if (!hasStockWithinMinMax(inventory, max, min) || !validData || !isMiscFieldValid(misc, isInHouse)) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Inventory (Inv) must be a value between min and max and all values must be valid", ButtonType.OK);
             alert.showAndWait();
             return;
@@ -99,49 +152,84 @@ public class ModifyPartFormController  {
 
 
         if (inhouseRadio.isSelected() == true) {
-            Inventory.addPart(new InHouse(id, name, price, inventory, min, max));
+            InHouse newPart = new InHouse(id, name, price, inventory, min, max);
+            newPart.setMachineId(Integer.parseInt(misc));
+            Inventory.updatePart(getPartIndex(part), newPart);
+
         } else {
-            Inventory.addPart(new Outsourced(id, name, price, inventory, min, max));
+            Outsourced newPart = new Outsourced(id, name, price, inventory, min, max);
+            newPart.setCompanyName(misc);
+            Inventory.updatePart(getPartIndex(part), newPart);
         }
 
-        //todo: idk what the last field is for i need to go back later
-
-        clearTextFields();
+        Stage stage = (Stage) vBox.getScene().getWindow();
+        stage.close();
     }
 
-    protected void clearTextFields() {
-        idTextField.setText("");
-        nameTextField.setText("");
-        inventoryTextField.setText("");
-        priceTextField.setText("");
-        maxTextField.setText("");
-        minTextField.setText("");
-        miscTextField.setText("");
+    /**
+     * @param part part searching for
+     * @return index
+     */
+    public int getPartIndex(Part part) {
+        for(int i = 0; i < Inventory.getParts().size(); i++) {
+            if (part == Inventory.getParts().get(i)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     * @param misc
+     * @param isInHouse
+     * @return
+     */
+    public Boolean isMiscFieldValid(String misc, Boolean isInHouse) {
+        if (isInHouse) {
+            return misc.matches("-?\\d+");
+        }
+
+        return true;
     }
 
 
+    /**
+     * @param inventory
+     * @param max
+     * @param min
+     * @return
+     */
      static boolean hasStockWithinMinMax(int inventory, int max, int min) {
         return inventory > min && inventory < max;
     }
 
+    /**
+     * updates scene as inhouse
+     */
     public void updateSceneInhouse() {
         miscLabel.setText("Machine ID");
     }
 
+    /**
+     * updates scene as outsourced
+     */
     public void updateSceneOutsource() {
         miscLabel.setText("Company Name");
     }
 
+    /**
+     * closes stage
+     */
     public void cancelButton() {
         Stage stage = (Stage) vBox.getScene().getWindow();
         stage.close();
     }
 
-    protected void assignOnCallMethods() {
-        saveButton.setOnAction(this::saveData);
-    }
 
-
+    /**
+     * Populates form with assigned part
+     */
     public void populateForm() {
         idTextField.setText(Integer.toString(part.getId()));
         nameTextField.setText(part.getName());
@@ -149,6 +237,15 @@ public class ModifyPartFormController  {
         inventoryTextField.setText(Integer.toString(part.getStock()));
         maxTextField.setText(Integer.toString(part.getMax()));
         minTextField.setText(Integer.toString(part.getMin()));
-        //todo: last field
+
+        String miscField;
+        if (part instanceof InHouse) {
+            int machineId = ((InHouse) part).getMachineId();
+            miscField = Integer.toString(machineId);
+        } else {
+            miscField = ((Outsourced) part).getCompanyName();
+        }
+
+        miscTextField.setText(miscField);
     }
 }

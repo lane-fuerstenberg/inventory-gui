@@ -9,7 +9,7 @@
 
 <?import javafx.geometry.Insets?>
 <TableView xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.fuerstenberg.inventorymanagergui.PartTableViewController" fx:id="partTableView" prefHeight="200.0" prefWidth="200.0"
+           fx:controller="com.fuerstenberg.inventorymanagergui.component.ProductPartTableViewController" fx:id="productPartTableView" prefHeight="200.0" prefWidth="200.0"
            GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
         <columns>
             <TableColumn fx:id="partIdColumn" prefWidth="75.0" resizable="false" text="Part ID" />

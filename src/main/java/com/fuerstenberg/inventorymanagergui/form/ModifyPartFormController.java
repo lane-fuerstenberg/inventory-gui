@@ -37,6 +37,12 @@ public class ModifyPartFormController  {
      * fxml accessor
      */
     @FXML
+    protected RadioButton outsourceRadio;
+
+    /**
+     * fxml accessor
+     */
+    @FXML
     protected TextField idTextField;
 
     /**
@@ -239,11 +245,19 @@ public class ModifyPartFormController  {
         minTextField.setText(Integer.toString(part.getMin()));
 
         String miscField;
+
         if (part instanceof InHouse) {
             int machineId = ((InHouse) part).getMachineId();
             miscField = Integer.toString(machineId);
+            miscLabel.setText("Machine ID");
+            inhouseRadio.setSelected(true);
+            outsourceRadio.setSelected(false);
+
         } else {
             miscField = ((Outsourced) part).getCompanyName();
+            miscLabel.setText("Company Name");
+            outsourceRadio.setSelected(true);
+            inhouseRadio.setSelected(false);
         }
 
         miscTextField.setText(miscField);

@@ -288,7 +288,6 @@ public class ModifyProductFormController implements Initializable {
         maxTextField.setText(Integer.toString(product.getMax()));
         minTextField.setText(Integer.toString(product.getMin()));
 
-
         for (Part p : product.getAllAssociatedParts()) {
             associatedParts.add(p);
         }

@@ -44,7 +44,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minWidth="-Infinity" prefHeight="400.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fuerstenberg.inventorymanagergui.MainController">
+<VBox fx:id="vbox" minWidth="-Infinity" prefHeight="400.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fuerstenberg.inventorymanagergui.MainController">
    <children>
       <Label text="Inventory Management System">
          <VBox.margin>
@@ -172,6 +172,18 @@
          </children>
          <VBox.margin>
             <Insets top="15.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT">
+         <children>
+            <Button mnemonicParsing="false" onAction="#closeScene" text="Exit">
+               <HBox.margin>
+                  <Insets bottom="20.0" right="50.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets />
          </VBox.margin>
       </HBox>
    </children>

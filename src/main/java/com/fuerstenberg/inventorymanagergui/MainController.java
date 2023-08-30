@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,6 +25,13 @@ import java.util.ResourceBundle;
  * Controller for fxml mainForm
  */
 public class MainController implements Initializable {
+
+
+    /**
+     *
+     */
+    @FXML
+    private VBox vbox;
 
     /**
      * fxml accessor
@@ -211,6 +219,12 @@ public class MainController implements Initializable {
     private static void setStageProperties(Stage stage) {
         stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);
+    }
+
+    @FXML
+    private void closeScene() {
+        Stage stage = (Stage) vbox.getScene().getWindow();
+        stage.close();
     }
 
     /**
